@@ -11,7 +11,9 @@ app.use(express.json());
 app.use(cors());
 
 // Database Connection With MongoDB
-mongoose.connect("{ paste your mongoDB Connection string }/e-commerce");
+mongoose.connect(
+  "mongodb+srv://usergreatstack:Lakshmi123@cluster0.emp9ukb.mongodb.net/e-commerce"
+);
 // paste your mongoDB Connection string above with password
 // password should not contain '@' special character
 
@@ -127,20 +129,16 @@ app.post("/login", async (req, res) => {
       const token = jwt.sign(data, "secret_ecom");
       res.json({ success, token });
     } else {
-      return res
-        .status(400)
-        .json({
-          success: success,
-          errors: "please try with correct email/password",
-        });
-    }
-  } else {
-    return res
-      .status(400)
-      .json({
+      return res.status(400).json({
         success: success,
         errors: "please try with correct email/password",
       });
+    }
+  } else {
+    return res.status(400).json({
+      success: success,
+      errors: "please try with correct email/password",
+    });
   }
 });
 
@@ -150,12 +148,10 @@ app.post("/signup", async (req, res) => {
   let success = false;
   let check = await Users.findOne({ email: req.body.email });
   if (check) {
-    return res
-      .status(400)
-      .json({
-        success: success,
-        errors: "existing user found with this email",
-      });
+    return res.status(400).json({
+      success: success,
+      errors: "existing user found with this email",
+    });
   }
   let cart = {};
   for (let i = 0; i < 300; i++) {
